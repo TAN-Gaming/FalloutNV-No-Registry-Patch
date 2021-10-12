@@ -4,7 +4,7 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 [release_link]: https://github.com/TAN-Gaming/FalloutNV-No-Registry-Patch/releases
 
 ## Features
-- It fixes launching problems after moving the game to another folder.
+- It fixes launching problems after moving the game to another folder, no Registry keys needed.
 - It doesn't touch the Registry at all.
 - It makes the game portable.
 
