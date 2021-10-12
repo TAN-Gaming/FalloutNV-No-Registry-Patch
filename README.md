@@ -11,7 +11,7 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 ## How to use
 - Download release builds from the [release section][release_link] or build from source.
 - Find the file `GalaxyWrp.dll` in the game folder, rename it to `orig_GalaxyWrp.dll`.
-- Paste the downloaded file into the game folder.
+- Paste the downloaded file `GalaxyWrp.dll` into the game folder.
 
 ## Build instructions
 
@@ -28,4 +28,4 @@ mingw32-make -f Makefile
 
 ## Notes
 - MSVC is not supported because it's a lot easier to create a proxy DLL using MinGW.
-- This code may works with another versions if you can create a proxy DLL that loaded by `FalloutNV.exe` and `FalloutNVLauncher.exe`.
+- This code may works with another versions too, if you created a proxy DLL that loaded by `FalloutNV.exe` and `FalloutNVLauncher.exe`.
