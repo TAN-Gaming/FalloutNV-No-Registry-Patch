@@ -14,11 +14,9 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 - Paste the downloaded file into your game folder.
 
 ## Build instructions
-
 ### Requirements
 - MinGW-W64 compiler (version >= 8.0)
 - CMake (version >= 3.15)
-
 ### Building the DLL
 ```
 cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE="Release" -DBUILD_MINGW_STATIC=ON -S"your_source_code_dir" -B"your_build_dir"
