@@ -4,7 +4,7 @@ project(FalloutNV_NoReg LANGUAGES CXX RC)
 
 # Check 32-Bit
 if(NOT (CMAKE_SIZEOF_VOID_P EQUAL 4))
-  message(FATAL_ERROR "32-bit is only supported.")
+  message(FATAL_ERROR "Only 32-bit is supported.")
 endif()
 
 if(MINGW)
