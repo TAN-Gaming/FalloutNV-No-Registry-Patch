@@ -4,16 +4,16 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 
 [release_link]: https://github.com/TAN-Gaming/FalloutNV-No-Registry-Patch/releases
 
-# Features
+## Features
 - Fix install-related problems.
 - Make your game portable.
 
-# How to use
+## How to use
 - Download release builds from the [release section][release_link] or build from source.
 - Find the file `GalaxyWrp.dll` in your game folder, rename it to `orig_GalaxyWrp.dll`.
 - Paste the downloaded file into your game folder.
 
-# Build instructions
+## Build instructions
 
 ### Requirements
 - MinGW-W64 compiler (version >= 8.0)
