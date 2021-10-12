@@ -20,7 +20,9 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 - CMake (version >= 3.15)
 
 ## Building the DLL
-<code>cd your_source_code_dir</code>
-<code>cmake -G "MinGW Makefiles" -DCMAKE_SOURCE_DIR="your_source_code_dir" -DCMAKE_BINARY_DIR="your_build_dir" -DBUILD_MINGW_STATIC=ON</code>
-<code>cd your_build_dir</code>
-<code>mingw32-make -f Makefile</code>
+<code>
+  cd your_source_code_dir
+  cmake -G "MinGW Makefiles" -DCMAKE_SOURCE_DIR="your_source_code_dir" -DCMAKE_BINARY_DIR="your_build_dir" -DBUILD_MINGW_STATIC=ON
+  cd your_build_dir
+  mingw32-make -f Makefile
+</code>
