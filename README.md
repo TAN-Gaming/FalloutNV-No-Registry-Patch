@@ -21,7 +21,10 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 
 ### Building the DLL
 ```
-cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE="Release" -DBUILD_MINGW_STATIC=ON -S"your_source_code_dir" -B"your_build_dir"
+cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE="Release" -DBUILD_MINGW_STATIC=ON -S"your_source_dir" -B"your_build_dir"
 cd your_build_dir
 mingw32-make -f Makefile
 ```
+
+## Notes
+- MSVC is not supported because it's a lot easier to create a proxy dll using MinGW.
