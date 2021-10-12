@@ -28,4 +28,4 @@ mingw32-make -f Makefile
 
 ## Notes
 - MSVC is not supported because it's a lot easier to create a proxy DLL using MinGW.
-- This code may works with another version if you can create a proxy DLL that loaded by `FalloutNV.exe` and `FalloutNVLauncher.exe`.
+- This code may works with another versions if you can create a proxy DLL that loaded by `FalloutNV.exe` and `FalloutNVLauncher.exe`.
