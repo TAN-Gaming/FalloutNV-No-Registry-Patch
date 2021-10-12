@@ -1,0 +1,36 @@
+/* Version */
+#include <winver.h>
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904E4"
+        {
+            VALUE "CompanyName", "TANGaming"
+            VALUE "FileDescription", "Fallout NV No-Registry Patch (GOG Version)"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "GalaxyWrp"
+            VALUE "LegalCopyright", "Copyright (C) 2021 TANGaming"
+            VALUE "OriginalFilename", "GalaxyWrp.dll"
+            VALUE "ProductName", "Fallout NV No-Registry Patch"
+            VALUE "ProductVersion", "1.0.0.0"
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0409, 0x04E4
+    }
+}
