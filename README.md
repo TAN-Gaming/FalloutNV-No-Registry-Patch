@@ -4,14 +4,14 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 [release_link]: https://github.com/TAN-Gaming/FalloutNV-No-Registry-Patch/releases
 
 ## Features
-- It fixes install-related problems.
+- It fixes launching problems after moving the game to another folder.
 - It doesn't touch the Registry at all.
-- It makes your game portable.
+- It makes the game portable.
 
 ## How to use
 - Download release builds from the [release section][release_link] or build from source.
-- Find the file `GalaxyWrp.dll` in your game folder, rename it to `orig_GalaxyWrp.dll`.
-- Paste the downloaded file into your game folder.
+- Find the file `GalaxyWrp.dll` in the game folder, rename it to `orig_GalaxyWrp.dll`.
+- Paste the downloaded file into the game folder.
 
 ## Build instructions
 
@@ -27,4 +27,5 @@ mingw32-make -f Makefile
 ```
 
 ## Notes
-- MSVC is not supported because it's a lot easier to create a proxy dll using MinGW.
+- MSVC is not supported because it's a lot easier to create a proxy DLL using MinGW.
+- This code may works with another version if you can create a proxy DLL that loaded by `FalloutNV.exe` and `FalloutNVLauncher.exe`.
