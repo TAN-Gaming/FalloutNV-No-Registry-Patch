@@ -10,7 +10,7 @@ No-Registry Patch for Fallout New Vegas (GOG Version)
 
 # How to use
 - Download release builds from the [release section][release_link] or build from source.
-- Find the file <code>GalaxyWrp.dll</code> in your game folder, rename it to <code>orig_GalaxyWrp.dll</code>.
+- Find the file `GalaxyWrp.dll` in your game folder, rename it to `orig_GalaxyWrp.dll`.
 - Paste the downloaded file into your game folder.
 
 # Build instructions
