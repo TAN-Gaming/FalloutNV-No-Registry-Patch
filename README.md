@@ -1,12 +1,12 @@
 # FalloutNV-No-Registry-Patch
 No-Registry Patch for Fallout New Vegas (GOG Version)
 
-
 [release_link]: https://github.com/TAN-Gaming/FalloutNV-No-Registry-Patch/releases
 
 ## Features
-- Fix install-related problems.
-- Make your game portable.
+- It fixes install-related problems.
+- It doesn't touch the Registry at all.
+- It makes your game portable.
 
 ## How to use
 - Download release builds from the [release section][release_link] or build from source.
