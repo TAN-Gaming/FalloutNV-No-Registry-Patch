@@ -1,4 +1,4 @@
-/* Fallout New Vegas No-Registry Patch (GOG Version)
+/* No-Registry Patch for Fallout New Vegas
 
    Copyright (C) 2021 TANGaming <https://github.com/TAN-Gaming>
 
