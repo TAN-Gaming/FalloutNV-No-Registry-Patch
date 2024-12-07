@@ -4,9 +4,9 @@
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION 2,0,0,0
 PRODUCTVERSION 2,0,0,0
-FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
-FILEFLAGS 0x1L
+FILEFLAGS VS_FF_DEBUG
 #else
 FILEFLAGS 0x0L
 #endif
@@ -16,13 +16,13 @@ FILESUBTYPE VFT2_UNKNOWN
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904E4"
+        BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "TANGaming"
             VALUE "FileDescription", "No-Registry Patch for Fallout NV (GOG Version)"
             VALUE "FileVersion", "2.0.0.0"
             VALUE "InternalName", "GalaxyWrp"
-            VALUE "LegalCopyright", "Copyright (C) 2021-2023 TANGaming <https://github.com/TAN-Gaming>"
+            VALUE "LegalCopyright", "Copyright (C) 2021-2024 TANGaming <https://github.com/TAN-Gaming>"
             VALUE "OriginalFilename", "GalaxyWrp.dll"
             VALUE "ProductName", "No-Registry Patch for Fallout NV"
             VALUE "ProductVersion", "2.0.0.0"
@@ -30,6 +30,6 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x0409, 0x04E4
+        VALUE "Translation", 0x0409, 1200
     END
 END

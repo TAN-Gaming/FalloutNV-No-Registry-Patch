@@ -1,23 +1,24 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13.5)
 
-project(FalloutNV_NoReg LANGUAGES CXX RC)
+project(NoRegPatch-FalloutNV LANGUAGES C RC)
 
-# Check 32-Bit
-if(NOT (CMAKE_SIZEOF_VOID_P EQUAL 4))
-  message(FATAL_ERROR "Only 32-bit is supported.")
+# Check for 32-bit Windows
+if(NOT (WIN32 AND (CMAKE_SIZEOF_VOID_P EQUAL 4)))
+    message(FATAL_ERROR "32-bit Windows is the only supported platform!")
 endif()
 
 # Find MinHook
-set(MINHOOK_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/minhook/include)
-
+set(MINHOOK_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/minhook/include)
 if(MINGW)
-  set(MINHOOK_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/minhook/lib32-mingw/minhook.x32.a)
+    set(MINHOOK_LIBRARY ${PROJECT_SOURCE_DIR}/minhook/lib32-mingw/minhook.x32.a)
+else()
+    message(FATAL_ERROR "Compiler not supported!")
 endif()
 
 add_library(NoRegPatch SHARED
-  NoRegPatch.c
-  version.rc
-  GalaxyWrp.def
+    NoRegPatch.c
+    version.rc
+    GalaxyWrp.def
 )
 
 set_target_properties(NoRegPatch PROPERTIES PREFIX "")

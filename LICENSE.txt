@@ -1,6 +1,6 @@
 No-Registry Patch for Fallout New Vegas
 
-Copyright (C) 2021-2023 TANGaming <https://github.com/TAN-Gaming>
+Copyright (C) 2021-2024 Thamatip Chitpong <tangaming123456@outlook.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

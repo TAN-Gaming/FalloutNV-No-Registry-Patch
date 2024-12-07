@@ -1,7 +1,7 @@
 /*
  * No-Registry Patch for Fallout New Vegas
  *
- * Copyright (C) 2021-2023 TANGaming <https://github.com/TAN-Gaming>
+ * Copyright (C) 2021-2024 Thamatip Chitpong <tangaming123456@outlook.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,63 @@
 
 #include <MinHook.h>
 
+#define CONST_STR_LEN(str) ((sizeof(str) / sizeof(str[0])) - 1)
+
 typedef LONG (WINAPI *PFREGOPENKEYEXW)(HKEY, LPCWSTR, DWORD, REGSAM, PHKEY);
 typedef LONG (WINAPI *PFREGQUERYVALUEEXW)(HKEY, LPCWSTR, LPDWORD, LPDWORD, LPBYTE, LPDWORD);
 typedef LONG (WINAPI *PFREGCLOSEKEY)(HKEY);
 
 /* For calling original functions */
-PFREGOPENKEYEXW Real_RegOpenKeyExW = NULL;
-PFREGQUERYVALUEEXW Real_RegQueryValueExW = NULL;
-PFREGCLOSEKEY Real_RegCloseKey = NULL;
+static PFREGOPENKEYEXW Real_RegOpenKeyExW = NULL;
+static PFREGQUERYVALUEEXW Real_RegQueryValueExW = NULL;
+static PFREGCLOSEKEY Real_RegCloseKey = NULL;
 
-BOOL bUseHooked = FALSE;
-LPWSTR pszGameDir = NULL;
+/* A dummy registry key for hooked calls */
+static BYTE dummyKey[1];
+static HKEY hDummyKey = INVALID_HANDLE_VALUE;
 
-LPWSTR NoRegPatch_GetGameDir(void)
+/* Installed folder path of the game, initialize only once */
+static LPWSTR pszGameDir = NULL;
+
+/* NOTE: The installed path must be in the following format: "c:\gog games\fallout new vegas/" */
+static LPWSTR
+NoRegPatch_GetGameDir(void)
 {
-    DWORD dwRet;
+    DWORD dwLength;
     LPWSTR pszPath;
 
-    dwRet = GetCurrentDirectoryW(0, NULL);
-    if (dwRet == 0)
+    /* Get game folder path */
+    dwLength = GetCurrentDirectoryW(0, NULL);
+    if (dwLength == 0)
         return NULL;
 
-    /* NOTE: Included the length of '\' (1) */
-    pszPath = HeapAlloc(GetProcessHeap(), 0, (dwRet + 1) * sizeof(WCHAR));
+    dwLength += CONST_STR_LEN(L"/");
+    pszPath = HeapAlloc(GetProcessHeap(), 0, dwLength * sizeof(WCHAR));
     if (!pszPath)
         return NULL;
 
-    if (GetCurrentDirectoryW(dwRet, pszPath) == 0)
+    if (GetCurrentDirectoryW(dwLength - CONST_STR_LEN(L"/"), pszPath) == 0)
     {
         HeapFree(GetProcessHeap(), 0, pszPath);
         return NULL;
     }
 
-    StringCchCatW(pszPath, dwRet + 1, L"\\");
+    /* Convert all chars in the path to lowercase */
+    CharLowerBuffW(pszPath, dwLength - CONST_STR_LEN(L"/"));
+
+    /* Append the trailing "/" */
+    StringCchCatW(pszPath, dwLength, L"/");
 
     return pszPath;
 }
 
 /* Hooked RegOpenKeyExW */
-LONG WINAPI Hooked_RegOpenKeyExW(HKEY hKey, LPCWSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)
+LONG WINAPI
+Hooked_RegOpenKeyExW(HKEY hKey, LPCWSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)
 {
     if (_wcsicmp(lpSubKey, L"Software\\Bethesda Softworks\\FalloutNV") == 0)
     {
-        bUseHooked = TRUE;
+        *phkResult = hDummyKey;
         return ERROR_SUCCESS;
     }
 
@@ -77,25 +91,34 @@ LONG WINAPI Hooked_RegOpenKeyExW(HKEY hKey, LPCWSTR lpSubKey, DWORD ulOptions, R
 }
 
 /* Hooked RegQueryValueExW */
-LONG WINAPI Hooked_RegQueryValueExW(HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)
+LONG WINAPI
+Hooked_RegQueryValueExW(HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)
 {
-    if (bUseHooked)
+    if (hKey == hDummyKey)
     {
         if (wcscmp(lpValueName, L"Installed Path") == 0)
         {
-            DWORD cbData = (wcslen(pszGameDir) + 1) * sizeof(WCHAR);
+            /* Assume success */
+            LONG lError = ERROR_SUCCESS;
 
-            if (!lpData && lpcbData)
+            if (lpcbData)
             {
+                DWORD cbData = (wcslen(pszGameDir) + 1) * sizeof(WCHAR);
+
+                if (lpData)
+                {
+                    HRESULT hr = StringCbCopyW((LPWSTR)lpData, *lpcbData, pszGameDir);
+                    if (hr == STRSAFE_E_INSUFFICIENT_BUFFER)
+                    {
+                        lError = ERROR_MORE_DATA;
+                    }
+                }
+
+                /* Return the size (in bytes) to the caller */
                 *lpcbData = cbData;
-                return ERROR_SUCCESS;
             }
-            else if (lpData && (lpcbData && (*lpcbData >= cbData)))
-            {
-                memcpy(lpData, pszGameDir, cbData);
-                *lpcbData = cbData;
-                return ERROR_SUCCESS;
-            }
+
+            return lError;
         }
     }
 
@@ -103,19 +126,25 @@ LONG WINAPI Hooked_RegQueryValueExW(HKEY hKey, LPCWSTR lpValueName, LPDWORD lpRe
 }
 
 /* Hooked RegCloseKey */
-LONG WINAPI Hooked_RegCloseKey(HKEY hKey)
+LONG WINAPI
+Hooked_RegCloseKey(HKEY hKey)
 {
-    bUseHooked = FALSE;
+    if (hKey == hDummyKey)
+    {
+        return ERROR_SUCCESS;
+    }
+
     return Real_RegCloseKey(hKey);
 }
 
-void NoRegPatch_Init(void)
+static void
+NoRegPatch_Init(void)
 {
     /* Get game folder path */
     pszGameDir = NoRegPatch_GetGameDir();
     if (!pszGameDir)
     {
-        MessageBoxW(NULL, L"Failed to retrieve the game directory.", L"NoRegPatch", MB_ICONERROR | MB_OK);
+        MessageBoxW(NULL, L"Failed to create game install data.", L"NoRegPatch", MB_ICONERROR | MB_OK);
         TerminateProcess(GetCurrentProcess(), 0);
     }
 
@@ -126,6 +155,9 @@ void NoRegPatch_Init(void)
         TerminateProcess(GetCurrentProcess(), 0);
     }
 
+    /* Get fake handle for the dummy registry key */
+    hDummyKey = (HKEY)(PVOID)dummyKey;
+
     MH_CreateHook((LPVOID*)(&RegOpenKeyExW), (LPVOID*)(&Hooked_RegOpenKeyExW), (LPVOID*)(&Real_RegOpenKeyExW));
     MH_CreateHook((LPVOID*)(&RegQueryValueExW), (LPVOID*)(&Hooked_RegQueryValueExW), (LPVOID*)(&Real_RegQueryValueExW));
     MH_CreateHook((LPVOID*)(&RegCloseKey), (LPVOID*)(&Hooked_RegCloseKey), (LPVOID*)(&Real_RegCloseKey));
@@ -133,11 +165,12 @@ void NoRegPatch_Init(void)
     MH_EnableHook(MH_ALL_HOOKS);
 }
 
-void NoRegPatch_Uninit(void)
+static void
+NoRegPatch_Uninit(void)
 {
     MH_DisableHook(MH_ALL_HOOKS);
 
-    /* Uninitialize MinHook. */
+    /* Uninitialize MinHook */
     MH_Uninitialize();
 
     HeapFree(GetProcessHeap(), 0, pszGameDir);
