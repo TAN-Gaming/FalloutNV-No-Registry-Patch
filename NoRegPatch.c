@@ -96,11 +96,11 @@ Hooked_RegQueryValueExW(HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDW
 {
     if (hKey == hDummyKey)
     {
-        if (wcscmp(lpValueName, L"Installed Path") == 0)
-        {
-            /* Assume success */
-            LONG lError = ERROR_SUCCESS;
+        /* Opening the dummy key, assume success */
+        LONG lError = ERROR_SUCCESS;
 
+        if (_wcsicmp(lpValueName, L"Installed Path") == 0)
+        {
             if (lpcbData)
             {
                 DWORD cbData = (wcslen(pszGameDir) + 1) * sizeof(WCHAR);
@@ -117,9 +117,9 @@ Hooked_RegQueryValueExW(HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDW
                 /* Return the size (in bytes) to the caller */
                 *lpcbData = cbData;
             }
-
-            return lError;
         }
+
+        return lError;
     }
 
     return Real_RegQueryValueExW(hKey, lpValueName, lpReserved, lpType, lpData, lpcbData);
