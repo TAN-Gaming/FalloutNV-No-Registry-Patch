@@ -2,8 +2,8 @@
 
 /* DLL version info */
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION 2,0,0,0
-PRODUCTVERSION 2,0,0,0
+FILEVERSION 2,1,0,0
+PRODUCTVERSION 2,1,0,0
 FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 FILEFLAGS VS_FF_DEBUG
@@ -20,12 +20,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TANGaming"
             VALUE "FileDescription", "No-Registry Patch for Fallout NV (GOG Version)"
-            VALUE "FileVersion", "2.0.0.0"
+            VALUE "FileVersion", "2.1.0.0"
             VALUE "InternalName", "GalaxyWrp"
             VALUE "LegalCopyright", "Copyright (C) 2021-2024 TANGaming <https://github.com/TAN-Gaming>"
             VALUE "OriginalFilename", "GalaxyWrp.dll"
             VALUE "ProductName", "No-Registry Patch for Fallout NV"
-            VALUE "ProductVersion", "2.0.0.0"
+            VALUE "ProductVersion", "2.1.0.0"
         END
     END
     BLOCK "VarFileInfo"
